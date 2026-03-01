@@ -4,13 +4,19 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/react-demo',
+  cacheDir: '../node_modules/.vite/apps/web',
   server: {
     port: 4200,
     host: 'localhost',
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
   },
   preview: {
-    port: 4300,
+    port: 4200,
     host: 'localhost',
   },
   plugins: [react()],
@@ -19,7 +25,7 @@ export default defineConfig(() => ({
   //  plugins: [ nxViteTsPaths() ],
   // },
   build: {
-    outDir: './dist',
+    outDir: './build',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -27,7 +33,7 @@ export default defineConfig(() => ({
     },
   },
   test: {
-    name: '@react-demo/react-demo',
+    name: 'web',
     watch: false,
     globals: true,
     environment: 'jsdom',

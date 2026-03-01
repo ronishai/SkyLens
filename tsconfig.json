@@ -4,7 +4,13 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/react-demo"
+      "path": "./api-e2e"
+    },
+    {
+      "path": "./api"
+    },
+    {
+      "path": "./web"
     }
   ]
 }
