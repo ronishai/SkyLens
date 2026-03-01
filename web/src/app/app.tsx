@@ -109,6 +109,8 @@ export function App() {
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
+            {geoLoading && <p>Searching...</p>}
+            {geoError && <p className={styles.error}>{geoError}</p>}
             <ul>
               {geoResults.map((r) => (
                 <li key={`${r.name}-${r.lat}-${r.lon}`}>
