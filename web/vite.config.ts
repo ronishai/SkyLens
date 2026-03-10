@@ -19,7 +19,7 @@ export default defineConfig(() => ({
     port: 4200,
     host: 'localhost',
   },
-  plugins: [react()],
+  plugins: [react(),],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
@@ -44,4 +44,7 @@ export default defineConfig(() => ({
       provider: 'v8' as const,
     },
   },
+  css: {
+    postcss: './postcss.config.js',
+  }
 }));

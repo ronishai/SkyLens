@@ -101,5 +101,8 @@
       }
     }
   },
-  "nxCloudId": "6981dececa0ede48e87b2927"
+  "nxCloudId": "6981dececa0ede48e87b2927",
+  "cli": {
+    "packageManager": "pnpm"
+  }
 }

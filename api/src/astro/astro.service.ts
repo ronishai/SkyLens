@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { AstroSummaryQueryDto } from './dto/astro-summary.query';
+import sunCalc from 'suncalc';
 
 type Rating = 'Good' | 'Neutral' | 'Bad';
 
-const SunCalc = require('suncalc');
-
 @Injectable()
 export class AstroService {
-  getSummary(query: AstroSummaryQueryDto) {
+  public getSummary(query: AstroSummaryQueryDto) {
     console.log('USED INPUT:', {
       lat: query.lat,
       lon: query.lon,
@@ -30,10 +29,10 @@ export class AstroService {
     }
 
     const sunAltitudeDeg =
-      SunCalc.getPosition(dateTime, lat, lon).altitude * (180 / Math.PI);
+      sunCalc.getPosition(dateTime, lat, lon).altitude * (180 / Math.PI);
     const moonAltitudeDeg =
-      SunCalc.getMoonPosition(dateTime, lat, lon).altitude * (180 / Math.PI);
-    const moonIllumination = SunCalc.getMoonIllumination(dateTime).fraction;
+      sunCalc.getMoonPosition(dateTime, lat, lon).altitude * (180 / Math.PI);
+    const moonIllumination = sunCalc.getMoonIllumination(dateTime).fraction;
 
     const { rating, isDarkEnough, explanation } = this.rateNight(
       sunAltitudeDeg,
@@ -42,7 +41,6 @@ export class AstroService {
     );
 
     return {
-      debugStamp: Date.now(),
       input: { lat, lon, dateTime },
       sunAltitudeDeg,
       moonAltitudeDeg,
@@ -70,6 +68,7 @@ export class AstroService {
       return { rating: 'Bad', isDarkEnough, explanation };
     }
 
+    // TODO: move to UI
     explanation.push(`Moon altitude is ${moonAlt.toFixed(1)}°`);
     explanation.push(`Moon illumination is ${(moonIllum * 100).toFixed(1)}%`);
 

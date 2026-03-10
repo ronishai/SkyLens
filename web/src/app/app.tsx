@@ -1,8 +1,7 @@
 import styles from './app.module.css';
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { AstroSummary, fetchAstroSummary } from '../api/astro';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { GeocodeItem, searchCity } from '../api/geocode';
 
 type LocationMode = 'coords' | 'city';
@@ -59,13 +58,15 @@ export function App() {
     };
   }, [cityTrimmed, mode]);
 
-  const handleModeChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onModeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newMode = e.target.checked ? 'city' : 'coords';
     setMode(newMode);
     setResult(undefined);
   };
 
-  async function handlePlanNight() {
+  async function onPlanNightFormSubmitted(e: FormEvent) {
+    e.preventDefault();
+
     if (Number.isNaN(latNum) || Number.isNaN(lonNum) || !date) {
       alert('Please fill in all fields');
       return;
@@ -88,27 +89,43 @@ export function App() {
   }
 
   return (
-    <div>
-      <h1>Telescope Planning Assistant</h1>
-      <main>
+    <div className="text-white flex justify-center">
+      <div className="drift">
+        <div className="stars small"></div>
+      </div>
+      <div className="drift">
+        <div className="stars medium"></div>
+      </div>
+      <div className="drift">
+        <div className="stars large"></div>
+      </div>
+      <div className="shooting-star"></div>
+      <main className="w-full max-w-xl flex flex-col gap-4 p-6">
+        <h1 className="text-2xl font-bold text-center">
+          Telescope Planning Assistant
+        </h1>
         {loading && <p>Loading...</p>}
 
-        <label className={styles.checkbox}>
+        <label className="flex gap-2 justify-center items-center">
           <input
             type="checkbox"
             checked={mode === 'city'}
-            onChange={handleModeChange}
+            onChange={onModeChange}
+            className="appearance-none w-5 h-5 border-2 border-white rounded-full bg-transparent checked:bg-blue-300 checked:border-blue-300 cursor-pointer transition duration-200 ease-in-out"
           />
           Search by city name
         </label>
         {mode === 'city' && (
           <div>
             <input
+              className="w-48 h-8 text-center bg-slate-900 border border-slate-700 rounded px-3 py-2"
               type="text"
               placeholder="Enter city name"
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
+            {geoLoading && <p>Searching...</p>}
+            {geoError && <p className={styles.error}>{geoError}</p>}
             <ul>
               {geoResults.map((r) => (
                 <li key={`${r.name}-${r.lat}-${r.lon}`}>
@@ -125,35 +142,53 @@ export function App() {
             </ul>
           </div>
         )}
-        <div className={styles.location}>
-          <h3>Latitude</h3>
-          <input
-            type="number"
-            placeholder="Enter latitude"
-            value={lat}
-            onChange={(e) => setLat(e.target.value)}
-          />
-          <h3>Longitude</h3>
-          <input
-            type="number"
-            placeholder="Enter longitude"
-            value={lon}
-            onChange={(e) => setLon(e.target.value)}
-          />
-        </div>
+        <form onSubmit={} className="flex flex-col gap-y-2 w-[40ch] mx-auto items-stretch">
+          <div className="flex justify-between items-center">
+            <h3>Latitude</h3>
+            <input
+              className="bg-slate-900 border border-slate-700 rounded px-3 py-2"
+              type="number"
+              placeholder="Enter latitude"
+              value={lat}
+              onChange={(e) => setLat(e.target.value)}
+            />
+          </div>
 
-        <DatePicker
-          selected={date}
-          onChange={(newDate: Date | null) => {
-            setDate(newDate);
-          }}
-          className={styles.datepicker}
-          showIcon
-          toggleCalendarOnIconClick
-        />
-        <button className={styles.button} onClick={handlePlanNight}>
-          Plan my night
-        </button>
+          <div className="flex justify-between items-center">
+            <h3>Longitude</h3>
+            <input
+              className="bg-slate-900 border border-slate-700 rounded px-3 py-2"
+              type="number"
+              placeholder="Enter longitude"
+              value={lon}
+              onChange={(e) => setLon(e.target.value)}
+            />
+          </div>
+
+          <div className="flex justify-between items-center">
+            <h3>Date</h3>
+            <DatePicker
+              selected={date}
+              onChange={(newDate: Date | null) => {
+                setDate(newDate);
+              }}
+              showIcon
+              toggleCalendarOnIconClick
+              dateFormat="dd-MM-yyyy"
+              className="cursor-pointer bg-slate-900 border border-slate-700 rounded px-3 py-2 transition duration-200 ease-in-out"
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              className="cursor-pointer w-32 h-10 bg-slate-900 hover:bg-slate-600 border border-slate-700 rounded transition duration-200 ease-in-out"
+              onClick={onPlanNightFormSubmitted}
+              type="submit"
+            >
+              Plan my night
+            </button>
+          </div>
+        </form>
 
         {result && (
           <article className={styles.result}>
