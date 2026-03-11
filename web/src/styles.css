@@ -6,10 +6,13 @@ body,
 #root {
   height: 100%;
   overflow: hidden;
-  font-family: "Rubik", sans-serif;
 }
 
 body {
+  font-family: "Handjet", sans-serif;
+  font-weight: 200;
+  font-size: 20px;
+
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -325,4 +328,27 @@ body {
 
 .react-datepicker__tab-loop {
   position: absolute;
+}
+
+.react-datepicker {
+  border: 0px;
+  border-radius: 10px;
+  background-color: rgb(89, 92, 141);
+
+  font-family: "Handjet", sans-serif;
+  font-weight: 200;
+  font-size: 15px;
+}
+
+.react-datepicker__header {
+  background-color: #808fba;
+  color: #fff;
+}
+
+.react-datepicker__day--selected {
+  background-color: #808bb5;
+}
+
+.react-datepicker__day:hover {
+  background-color: #989dce;
 }
