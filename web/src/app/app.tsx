@@ -1,10 +1,11 @@
 import styles from './app.module.css';
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { AstroSummary, fetchAstroSummary } from './api/astro';
 import DatePicker from 'react-datepicker';
 import { GeocodeItem, searchCity } from './api/geocode';
 import Background from './components/Background';
 import ModeToggle from './components/ModeToggle';
+import 'react-datepicker/dist/react-datepicker.css';
 
 type LocationMode = 'coords' | 'city';
 
@@ -46,6 +47,7 @@ export function App() {
       } catch {
         if (alive) {
           setGeoError('Error searching for city');
+          setGeoResults([]);
         }
       } finally {
         if (alive) {
@@ -63,7 +65,17 @@ export function App() {
   async function onPlanNightFormSubmitted(e: FormEvent) {
     e.preventDefault();
 
-    if (Number.isNaN(latNum) || Number.isNaN(lonNum) || !date) {
+    if (
+      !date ||
+      !lat.trim() ||
+      !lon.trim() ||
+      Number.isNaN(latNum) ||
+      Number.isNaN(lonNum) ||
+      latNum < -90 ||
+      latNum > 90 ||
+      lonNum < -180 ||
+      lonNum > 180
+    ) {
       alert('Please fill in all fields');
       return;
     }
@@ -88,13 +100,29 @@ export function App() {
     <div className="text-white flex justify-center">
       <Background />
       <main className="w-full max-w-xl flex flex-col gap-4 p-6">
-        <h1 className="text-3xl font-bold text-center">SkyLens</h1>
-        <h2 className="text-2x font-semibold text-center">
+        <h1 className="text-4xl font-bold text-center">SkyLens</h1>
+        <h2 className="text-2xl font-semibold text-center">
           Telescope Planning Assistant
         </h2>
 
         {loading && <p>Loading...</p>}
-        <ModeToggle value={mode} onChange={(newMode) => setMode(newMode)} />
+        <ModeToggle
+          value={mode}
+          onChange={(newMode) => {
+            setMode(newMode);
+
+            setGeoResults([]);
+            setGeoError(null);
+            setResult(undefined);
+
+            setLat('');
+            setLon('');
+
+            if (newMode === 'coords') {
+              setCity('');
+            }
+          }}
+        />
 
         <form
           onSubmit={onPlanNightFormSubmitted}
@@ -105,7 +133,7 @@ export function App() {
               <div className="flex justify-between items-center">
                 <h3>City</h3>
                 <input
-                  className="focus:outline-none bg-slate-900 border border-slate-700 rounded px-3 py-2"
+                  className="focus:outline-none w-50 bg-slate-900 border border-slate-700 rounded px-3 py-2"
                   type="text"
                   placeholder="Enter city name"
                   value={city}
@@ -119,9 +147,13 @@ export function App() {
                 {geoResults.map((r) => (
                   <li key={`${r.name}-${r.lat}-${r.lon}`}>
                     <button
+                      type="button"
                       onClick={() => {
                         setLat(r.lat.toString());
                         setLon(r.lon.toString());
+                        setCity(r.name);
+                        setGeoResults([]);
+                        setGeoError(null);
                       }}
                     >
                       {r.name}
@@ -137,7 +169,7 @@ export function App() {
               <div className="flex justify-between items-center">
                 <h3>Latitude</h3>
                 <input
-                  className="focus:outline-none bg-slate-900 border border-slate-700 rounded px-3 py-2"
+                  className="focus:outline-none w-50 bg-slate-900 border border-slate-700 rounded px-3 py-2"
                   type="number"
                   placeholder="Enter latitude"
                   value={lat}
@@ -148,7 +180,7 @@ export function App() {
               <div className="flex justify-between items-center">
                 <h3>Longitude</h3>
                 <input
-                  className="focus:outline-none bg-slate-900 border border-slate-700 rounded px-3 py-2"
+                  className="focus:outline-none w-50 bg-slate-900 border border-slate-700 rounded px-3 py-2"
                   type="number"
                   placeholder="Enter longitude"
                   value={lon}
@@ -168,7 +200,7 @@ export function App() {
               showIcon
               toggleCalendarOnIconClick
               dateFormat="dd-MM-yyyy"
-              className="focus:outline-none w-39 h-10 cursor-pointer bg-slate-900 border border-slate-700 rounded px-3 py-2 transition duration-200 ease-in-out"
+              className="focus:outline-none h-12 cursor-pointer bg-slate-900 border border-slate-700 rounded px-3 py-2 transition duration-200 ease-in-out"
             />
           </div>
 
@@ -187,6 +219,8 @@ export function App() {
             <h2>Rating: {result.rating}</h2>
             <p>
               Moon Illumination: {(result.moonIllumination * 100).toFixed(0)}%
+              Sun Altitude: {result.sunAltitudeDeg.toFixed(1)}° Moon Altitude:{' '}
+              {result.moonAltitudeDeg.toFixed(1)}°
             </p>
             <ul className={styles.explanation}>
               {result.explanation.map((e: string) => (

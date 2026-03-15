@@ -70,13 +70,6 @@
         "watchDepsTargetName": "watch-deps",
         "serveStaticTargetName": "serve-static"
       }
-    },
-    {
-      "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      },
-      "exclude": ["api-e2e/**/*"]
     }
   ],
   "targetDefaults": {
@@ -101,8 +94,8 @@
       }
     }
   },
-  "nxCloudId": "6981dececa0ede48e87b2927",
   "cli": {
     "packageManager": "pnpm"
-  }
+  },
+  "neverConnectToCloud": true
 }
