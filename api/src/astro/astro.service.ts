@@ -21,19 +21,6 @@ export class AstroService {
       );
     }
 
-    console.log('USED INPUT:', {
-      lat,
-      lon,
-      dateTimeRaw: query.dateTime,
-      dateTimeISO: dateTime.toISOString(),
-    });
-
-    console.log('SunCalc methods:', {
-      getPosition: typeof SunCalc.getPosition,
-      getMoonPosition: typeof SunCalc.getMoonPosition,
-      getMoonIllumination: typeof SunCalc.getMoonIllumination,
-    });
-
     const sunAltitudeDeg =
       SunCalc.getPosition(dateTime, lat, lon).altitude * (180 / Math.PI);
     const moonAltitudeDeg =

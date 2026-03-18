@@ -22,8 +22,7 @@ export class GeocodeService {
 
     const response = await fetch(url, {
       headers: {
-        'User-Agent':
-          'telescope-planning-assistant/1.0 (ronishai416@gmail.com)',
+        'User-Agent': 'telescope-planning-assistant/1.0',
       },
     });
 
