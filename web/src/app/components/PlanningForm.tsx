@@ -1,8 +1,9 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CityForm from './CityForm';
 import CoordsForm from './CoordsForm';
+import { on } from 'events';
 interface PlanningFormProps {
   mode: 'coords' | 'city';
   onSubmit: (lat: number, lon: number, date: Date) => void;
@@ -13,12 +14,29 @@ function PlanningForm({ mode, onSubmit }: PlanningFormProps) {
   const [finalLat, setFinalLat] = useState<number | null>(null);
   const [finalLon, setFinalLon] = useState<number | null>(null);
 
+  useEffect(() => {
+    setFinalLat(null);
+    setFinalLon(null);
+  }, [mode]);
+
   const onFormSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (finalLat !== null && finalLon !== null && date) {
-      onSubmit(finalLat, finalLon, date);
+    if (!date) {
+      alert('Please select a date');
+      return;
     }
+
+    if (finalLat === null || finalLon === null) {
+      alert(
+        mode === 'city'
+          ? 'Please enter a valid city'
+          : 'Please enter valid coordinates'
+      );
+      return;
+    }
+
+    onSubmit(finalLat, finalLon, date);
   };
 
   return (

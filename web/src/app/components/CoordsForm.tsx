@@ -16,19 +16,17 @@ function CoordsForm({ onValidChange }: CoordsFormProps) {
     const latNum = parseFloat(lat);
     const lonNum = parseFloat(lon);
 
-    if (
-      isNaN(latNum) ||
-      isNaN(lonNum) ||
-      latNum < -90 ||
-      latNum > 90 ||
-      lonNum < -180 ||
-      lonNum > 180
-    ) {
-      alert('Please enter valid coordinates');
-      return;
-    }
+    const isValid =
+      !isNaN(latNum) &&
+      !isNaN(lonNum) &&
+      latNum >= -90 &&
+      latNum <= 90 &&
+      lonNum >= -180 &&
+      lonNum <= 180;
 
-    onValidChange(latNum, lonNum);
+    if (isValid) {
+      onValidChange(latNum, lonNum);
+    }
   }, [lat, lon, onValidChange]);
 
   return (
