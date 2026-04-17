@@ -338,6 +338,8 @@ body {
   font-family: "Handjet", sans-serif;
   font-weight: 200;
   font-size: 15px;
+
+  display: flex;
 }
 
 .react-datepicker__header {
@@ -351,4 +353,18 @@ body {
 
 .react-datepicker__day:hover {
   background-color: #989dce;
+}
+
+.react-datepicker__time-container {
+  border-left: 1px solid #555;
+  float: none;
+}
+
+.react-datepicker__time-box {
+  overflow: hidden;
+  height: 270px;
+}
+
+.react-datepicker__time-list {
+  overflow-y: auto;
 }

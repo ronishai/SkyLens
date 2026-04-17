@@ -1,4 +1,7 @@
 import { AstroSummary } from '../api/astro';
+import GoodRatingGif from '../../assets/good-rating.gif';
+import NeutralRatingGif from '../../assets/neutral-rating.gif';
+import BadRatingGif from '../../assets/bad-rating.gif';
 
 interface ResultProps {
   result: AstroSummary;
@@ -9,13 +12,24 @@ function Result({ result }: ResultProps) {
     <div>
       <article className="flex flex-col items-center">
         <h2 className="text-2xl font-bold">Rating: {result.rating}</h2>
-        <p>
-          Moon Illumination: {(result.moonIllumination * 100).toFixed(0)}% Sun
-          Altitude: {result.sunAltitudeDeg.toFixed(1)}° Moon Altitude:{' '}
-          {result.moonAltitudeDeg.toFixed(1)}°
-        </p>
+        <div className="my-4">
+          {result.rating === 'Good' && (
+            <img src={GoodRatingGif} alt="Good rating" className="w-48" />
+          )}
+          {result.rating === 'Neutral' && (
+            <img src={NeutralRatingGif} alt="Neutral rating" className="w-48" />
+          )}
+          {result.rating === 'Bad' && (
+            <img src={BadRatingGif} alt="Bad rating" className="w-48" />
+          )}
+        </div>
+        <p>Moon Illumination: {(result.moonIllumination * 100).toFixed(0)}%</p>
+        <p>Sun Altitude: {result.sunAltitudeDeg.toFixed(1)}°</p>
+        <p>Moon Altitude: {result.moonAltitudeDeg.toFixed(1)}°</p>
         <ul>
-          <li>{result.explanation}</li>
+          {result.explanation.map((line, id) => (
+            <li key={id}>{line}</li>
+          ))}
         </ul>
       </article>
     </div>

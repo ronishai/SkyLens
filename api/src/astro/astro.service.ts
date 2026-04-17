@@ -27,7 +27,7 @@ export class AstroService {
       SunCalc.getMoonPosition(dateTime, lat, lon).altitude * (180 / Math.PI);
     const moonIllumination = SunCalc.getMoonIllumination(dateTime).fraction;
 
-    const { rating, isDarkEnough, explanation } = this.rateNight(
+    const { rating, isUsable, isDarkEnough, explanation } = this.rateNight(
       sunAltitudeDeg,
       moonAltitudeDeg,
       moonIllumination
@@ -39,6 +39,7 @@ export class AstroService {
       moonAltitudeDeg,
       moonIllumination,
       rating,
+      isUsable,
       isDarkEnough,
       explanation,
     };
@@ -48,38 +49,73 @@ export class AstroService {
     sunAlt: number,
     moonAlt: number,
     moonIllum: number
-  ): { rating: Rating; isDarkEnough: boolean; explanation: string[] } {
-    let explanation = '';
+  ): {
+    rating: Rating;
+    isUsable: boolean;
+    isDarkEnough: boolean;
+    explanation: string[];
+  } {
+    const explanation: string[] = [];
 
-    const isDarkEnough = sunAlt <= -12;
+    const isUsable = sunAlt <= -12;
+    const isDarkEnough = sunAlt <= -18;
 
-    if (!isDarkEnough) {
-      explanation =
-        'It is not dark enough for good stargazing (sun above -12°)';
-      return { rating: 'Bad', isDarkEnough, explanation: [explanation] };
-    }
-
-    if (moonAlt < 0) {
-      explanation =
-        'The moon is below the horizon, providing optimal dark conditions.';
+    if (!isUsable) {
+      explanation.push('It is not dark enough for stargazing (sun above -12°)');
       return {
-        rating: sunAlt <= -18 ? 'Good' : 'Neutral',
+        rating: 'Bad',
+        isUsable,
         isDarkEnough,
-        explanation: [explanation],
+        explanation,
       };
     }
 
-    if (moonIllum >= 0.75 && moonAlt > 20) {
-      explanation = 'The bright moon will significantly affect visibility.';
-      return { rating: 'Bad', isDarkEnough, explanation: [explanation] };
+    if (!isDarkEnough) {
+      explanation.push(
+        'Sky is only in nautical twilight (sun between -12° and -18°), which is not ideal for stargazing.'
+      );
+      return { rating: 'Neutral', isUsable, isDarkEnough, explanation };
+    }
+
+    if (moonAlt < 0) {
+      explanation.push(
+        'The moon is below the horizon, providing optimal dark conditions.'
+      );
+      explanation.push(
+        'Sky is fully dark enough for deep-sky observation (sun below -18°).'
+      );
+      return {
+        rating: 'Good',
+        isUsable,
+        isDarkEnough,
+        explanation,
+      };
+    }
+
+    if (moonIllum >= 0.75 && moonAlt > 30) {
+      explanation.push(
+        'The bright moon will significantly affect visibility by washing out faint objects.'
+      );
+      return { rating: 'Bad', isUsable, isDarkEnough, explanation };
     }
 
     if (moonIllum >= 0.4 && moonAlt > 20) {
-      explanation = 'The moderately bright moon will affect visibility.';
-      return { rating: 'Neutral', isDarkEnough, explanation: [explanation] };
+      explanation.push(
+        'The moderately bright moon will affect visibility by reducing contrast.'
+      );
+      return { rating: 'Neutral', isUsable, isDarkEnough, explanation };
     }
 
-    explanation = 'Conditions are good for stargazing.';
-    return { rating: 'Good', isDarkEnough, explanation: [explanation] };
+    if (moonIllum < 0.4 || moonAlt <= 20) {
+      explanation.push(
+        'Moon interference is minimal, allowing for good visibility of celestial objects.'
+      );
+      return { rating: 'Good', isUsable, isDarkEnough, explanation };
+    }
+
+    explanation.push(
+      'Conditions are acceptable, but not ideal for stargazing.'
+    );
+    return { rating: 'Neutral', isUsable, isDarkEnough, explanation };
   }
 }

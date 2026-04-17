@@ -5,6 +5,7 @@ import ModeToggle from './components/ModeToggle';
 import Modal from './components/Modal';
 import Result from './components/Result';
 import PlanningForm from './components/PlanningForm';
+import TelescopeGif from '../assets/telescope.gif';
 
 type LocationMode = 'coords' | 'city';
 
@@ -41,6 +42,11 @@ export function App() {
           <h2 className="text-2xl font-semibold text-center">
             Telescope Planning Assistant
           </h2>
+          <img
+            src={TelescopeGif}
+            alt="Telescope"
+            className="w-full max-w-32 aspect-square object-cover mx-auto my-4"
+          />
         </header>
 
         {loading && <p className="text-center">Loading...</p>}
