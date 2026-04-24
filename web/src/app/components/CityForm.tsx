@@ -15,12 +15,11 @@ function CityForm({ onValidChange }: CityFormProps) {
   const cityTrimmed = city.trim();
   useEffect(() => {
     if (cityTrimmed.length < 2 || citySelected) {
-      if (!citySelected) {
-        setGeoResults([]);
-        setGeoError(null);
-      }
       return;
     }
+
+    setGeoResults([]);
+    setGeoError(null);
 
     const t = setTimeout(async () => {
       setGeoLoading(true);
