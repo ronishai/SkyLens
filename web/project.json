@@ -1,5 +1,10 @@
 {
   "name": "web",
+  "targets": {
+    "lint": {
+      "command": "eslint \"web/src/**/*.{ts,tsx,js,jsx}\" \"web/*.config.{js,ts,mjs}\""
+    }
+  },
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "web/src",
   "projectType": "application",

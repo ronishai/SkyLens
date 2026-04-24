@@ -16,7 +16,7 @@ permissions:
 jobs:
   main:
     runs-on: ubuntu-latest
-
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,8 +39,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
-      - name: Run Nx checks
-        run: pnpm nx run-many -t lint typecheck build
+      - name: Lint
+        run: pnpm nx run-many -t lint
+
+      - name: Typecheck
+        run: pnpm nx run-many -t typecheck
+
+      - name: Build
+        run: pnpm nx run-many -t build
 
       - name: Fix CI with Nx
         run: pnpm nx fix-ci
