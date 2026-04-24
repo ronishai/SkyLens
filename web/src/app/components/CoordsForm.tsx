@@ -9,7 +9,7 @@ function CoordsForm({ onValidChange }: CoordsFormProps) {
   const [lon, setLon] = useState('');
 
   useEffect(() => {
-    if (lat === '' || lon === '') {
+    if (!lat || !lon) {
       return;
     }
 

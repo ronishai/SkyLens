@@ -19,9 +19,61 @@ body {
 
   align-items: center;
 
+  overflow: hidden;
+
   height: 100dvh;
   min-height: 0;
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+}
+
+section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+}
+
+section span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotate(315deg) translateX(0);
+  opacity: 0;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+    0 0 0 8px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(255, 255, 255, 1);
+  animation: animate 5s linear infinite;
+  z-index: -1;
+}
+
+section span::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(90deg, white, transparent);
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(315deg) translateX(0);
+  }
+
+  70% {
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: rotate(315deg) translateX(-1000px);
+  }
 }
 
 .stars {
@@ -47,92 +99,6 @@ body {
   opacity: 0.65;
 
   animation-duration: 2.4s;
-  box-shadow:
-    30px 80px white,
-    60px 140px white,
-    100px 200px white,
-    140px 320px white,
-    180px 500px white,
-    220px 680px white,
-    260px 840px white,
-    300px 60px white,
-    340px 240px white,
-    380px 420px white,
-    420px 1200px white,
-    460px 980px white,
-    500px 160px white,
-    540px 760px white,
-    580px 540px white,
-    620px 1120px white,
-    660px 860px white,
-    700px 300px white,
-    740px 640px white,
-    780px 1280px white,
-    820px 440px white,
-    860px 1040px white,
-    900px 150px white,
-    940px 720px white,
-    980px 120px white,
-    1020px 900px white,
-    1060px 580px white,
-    1100px 1000px white,
-    1140px 340px white,
-    1180px 1180px white,
-    1220px 260px white,
-    1260px 820px white,
-    1300px 500px white,
-    1340px 1080px white,
-    1380px 200px white,
-    1420px 660px white,
-    1460px 920px white,
-    1500px 480px white,
-    1540px 1140px white,
-    1580px 300px white,
-    1620px 740px white,
-    1660px 180px white,
-    1700px 980px white,
-    1740px 560px white,
-    1780px 800px white,
-    1820px 1040px white,
-    1860px 260px white,
-    1900px 620px white,
-    1940px 880px white,
-    1980px 440px white,
-    2020px 1200px white,
-    2060px 680px white,
-    2100px 320px white,
-    2140px 960px white,
-    2180px 540px white,
-    2200px 900px white,
-    80px 40px white,
-    150px 110px white,
-    210px 260px white,
-    275px 470px white,
-    330px 700px white,
-    390px 980px white,
-    470px 1120px white,
-    530px 1280px white,
-    610px 90px white,
-    690px 170px white,
-    760px 510px white,
-    840px 760px white,
-    910px 950px white,
-    990px 1110px white,
-    1070px 140px white,
-    1150px 260px white,
-    1230px 420px white,
-    1310px 640px white,
-    1390px 860px white,
-    1470px 1010px white,
-    1550px 1190px white,
-    1630px 380px white,
-    1710px 470px white,
-    1790px 690px white,
-    1870px 930px white,
-    1950px 1080px white,
-    2030px 250px white,
-    2110px 430px white,
-    2190px 770px white;
 }
 
 .stars.medium {
@@ -142,78 +108,15 @@ body {
   opacity: 0.85;
 
   animation-duration: 3.6s;
-
-  box-shadow:
-    50px 100px white,
-    120px 300px white,
-    180px 520px white,
-    260px 760px white,
-    340px 920px white,
-    400px 80px white,
-    480px 420px white,
-    560px 640px white,
-    640px 880px white,
-    720px 1100px white,
-    820px 340px white,
-    900px 600px white,
-    980px 120px white,
-    1060px 780px white,
-    1140px 520px white,
-    1200px 800px white,
-    1280px 240px white,
-    1360px 980px white,
-    1440px 400px white,
-    1520px 720px white,
-    1600px 900px white,
-    1680px 580px white,
-    1760px 260px white,
-    1800px 600px white,
-    1880px 1040px white,
-    1960px 460px white,
-    2040px 860px white,
-    2100px 300px white,
-    90px 200px white,
-    230px 140px white,
-    370px 500px white,
-    520px 920px white,
-    680px 250px white,
-    830px 760px white,
-    970px 980px white,
-    1120px 180px white,
-    1270px 640px white,
-    1430px 860px white,
-    1590px 320px white,
-    1730px 740px white,
-    1890px 520px white,
-    2050px 980px white;
 }
 
 .stars.large {
   width: 3px;
   height: 3px;
 
-  animation-duration: 5s;
+  opacity: 1;
 
-  box-shadow:
-    100px 200px white,
-    180px 350px white,
-    300px 1000px white,
-    420px 720px white,
-    500px 100px white,
-    620px 480px white,
-    800px 200px white,
-    920px 860px white,
-    1000px 700px white,
-    1200px 300px white,
-    1400px 900px white,
-    1560px 520px white,
-    1700px 600px white,
-    2000px 1000px white,
-    260px 540px white,
-    740px 980px white,
-    1160px 620px white,
-    1480px 220px white,
-    1840px 820px white;
+  animation-duration: 4.8s;
 }
 
 .drift {
@@ -258,60 +161,6 @@ body {
 
   100% {
     opacity: 0.45;
-  }
-}
-
-.shooting-star {
-  position: fixed;
-  top: 15%;
-  left: -15%;
-  z-index: 1;
-  width: 2px;
-  height: 2px;
-  border-radius: 999px;
-  background: white;
-  opacity: 0;
-  pointer-events: none;
-
-  box-shadow: 0 0 6px white, 0 0 12px white, 0 0 20px white;
-
-  animation: shooting-star 25s linear infinite;
-}
-
-.shooting-star::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 120px;
-  height: 2px;
-  transform: translate(100%, -50%);
-  background: linear-gradient(to right, white, transparent);
-  border-radius: 999px;
-}
-
-@keyframes shooting-star {
-  0% {
-    transform: translate(0, 0) rotate(-25deg) scale(0.8);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0;
-  }
-
-  15% {
-    opacity: 1;
-  }
-
-  20% {
-    transform: translate(130vw, 45vh) rotate(-25deg) scale(1);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translate(130vw, 45vh) rotate(-25deg) scale(1);
-    opacity: 0;
   }
 }
 

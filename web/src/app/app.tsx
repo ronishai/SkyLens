@@ -5,7 +5,7 @@ import ModeToggle from './components/ModeToggle';
 import Modal from './components/Modal';
 import Result from './components/Result';
 import PlanningForm from './components/PlanningForm';
-import TelescopeGif from '../assets/telescope.gif';
+import TelescopeGif from '../assets/telescope.webp';
 
 type LocationMode = 'coords' | 'city';
 
