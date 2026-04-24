@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 function generateStars(count: number, maxX: number, maxY: number): string {
   return Array.from(
@@ -8,17 +8,29 @@ function generateStars(count: number, maxX: number, maxY: number): string {
 }
 
 function Background() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const onResize = () =>
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const smallStars = useMemo(
-    () => generateStars(100, window.innerWidth, window.innerHeight),
-    []
+    () => generateStars(100, size.width, size.height),
+    [size]
   );
   const mediumStars = useMemo(
-    () => generateStars(50, window.innerWidth, window.innerHeight),
-    []
+    () => generateStars(50, size.width, size.height),
+    [size]
   );
   const largeStars = useMemo(
-    () => generateStars(20, window.innerWidth, window.innerHeight),
-    []
+    () => generateStars(20, size.width, size.height),
+    [size]
   );
 
   const shootingStars = useMemo(

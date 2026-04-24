@@ -34,7 +34,7 @@ export function App() {
   }
 
   return (
-    <div className="text-white flex justify-center">
+    <div className="text-white flex min-h-screen justify-center items-center">
       <Background />
       <main className="w-full max-w-xl flex flex-col gap-4 p-6">
         <header>

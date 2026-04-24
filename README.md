@@ -1,77 +1,117 @@
-# ReactDemo
+# SkyLens
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+SkyLens is a telescope planning assistant that helps users plan a stargazing session based on their location and selected date/time.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+Users can search by city, enter coordinates manually, choose a date and time, and receive a night plan report that rates the selected stargazing session based on sun altitude, moon altitude, and moon illumination. The result is shown in a themed modal with the calculated conditions and a short explanation of whether the session is good for observing.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
-## Run tasks
+## Preview
 
-To run the dev server for your app, use:
+![SkyLens preview](./assets/skylens-preview.png)
 
-```sh
-npx nx serve react-demo
+## Result Example
+
+![Result Example](./assets/result-example.png)
+
+SkyLens returns a night plan report that includes:
+
+- Stargazing rating, such as Good, Neutral, or Bad
+- Moon illumination percentage
+- Sun altitude
+- Moon altitude
+- A short explanation of the observing conditions
+
+## Features
+
+- Search by city or specific location using Nominatim geocoding
+- Calculate sun and moon data with SunCalc
+- Pick a date and time for the stargazing session with React DatePicker
+- Generate a night plan report with a stargazing rating, sun altitude, moon altitude, moon illumination, and an explanation
+- Animated starry background
+- Telescope-themed pixel UI
+- Input validation for location-based planning
+
+## Tech Stack
+
+**Frontend**
+- React
+- TypeScript
+- Tailwind CSS
+- CSS
+- React DatePicker for date/time selection
+
+**Backend**
+- NestJS
+
+**Astronomy & Location**
+- SunCalc
+- Nominatim geocoding
+
+**Tooling**
+- Nx monorepo
+- pnpm
+
+## What I Learned
+
+While building SkyLens, I practiced: 
+
+- Using Nx to manage my frontend and backend as one unified project
+- Managing form state in React
+- Handling conditional UI between city search and coordinate input
+- Using geocoding data for location-based planning
+- Calculating sun and moon conditions with SunCalc
+- Optimizing media files for better performance
+- Refactoring and removing unused/debug code
+- UI design using CSS animations
+
+## Project Goals
+
+My goal for this project was to build a small but complete full-stack app with an astronomy-related theme, which is a field I am very interested in.
+
+I wanted to improve my full-stack development abilities while exploring a topic that is close to my heart. 
+
+## How It Works
+
+1. The user chooses whether to search by city or enter coordinates manually.
+2. The user selects a date and time. 
+3. SkyLens processes the selected location and date/time. 
+4. The app displays a themed modal that includes a rating, calculated sun/moon conditions, and an explanation of the result.
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ronishai/SkyLens.git
 ```
 
-To create a production bundle:
+Navigate into the project:
 
-```sh
-npx nx build react-demo
+```bash
+cd SkyLens
 ```
 
-To see all available targets to run for a project, run:
+Install dependencies:
 
-```sh
-npx nx show project react-demo
+```bash
+pnpm install
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+Run the development server:
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/react:app demo
+```bash
+pnpm dev
 ```
 
-To generate a new library, use:
+## Future Improvements
 
-```sh
-npx nx g @nx/react:lib mylib
-```
+- Add weather and cloud coverage data
+- Add moon phase information
+- Recommend visible planets and deep-sky objects
+- Improve mobile responsiveness
+- Add light pollution estimation
+- Add saved observing sessions
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Author
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Built by Roni.
