@@ -7,11 +7,13 @@ interface ModalProps {
 }
 
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 bg-slate-500/80 flex items-center justify-center p-4">
-      <div className="bg-slate-400 border border-slate-600 rounded-lg shadow-lg max-w-2xl w-full text-white">
+    <div
+      className={`fixed inset-0 z-50 bg-slate-500/80 flex items-center justify-center p-4 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+    >
+      <div
+        className={`bg-slate-400 border border-slate-600 rounded-lg shadow-lg max-w-2xl w-full text-white transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+      >
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-2xl font-bold">Night Plan</h2>
           <button

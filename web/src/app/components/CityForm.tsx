@@ -61,7 +61,7 @@ function CityForm({ onValidChange }: CityFormProps) {
             <li key={`${r.name}-${r.lat}-${r.lon}`}>
               <button
                 type="button"
-                className="w-full text-left px-3 py-2 hover:bg-slate-700"
+                className="w-full text-left px-3 py-2 hover:bg-slate-700 transition duration-200 ease-in-out"
                 onClick={() => {
                   setCity(r.name);
                   setCitySelected(true);
