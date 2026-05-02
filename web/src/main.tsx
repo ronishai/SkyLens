@@ -1,6 +1,8 @@
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import * as ReactDOM from 'react-dom/client';
+import 'react-datepicker/dist/react-datepicker.css';
+import './styles.css';
 import App from './app/app';
 
 const root = ReactDOM.createRoot(

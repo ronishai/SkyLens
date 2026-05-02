@@ -1,84 +1,30 @@
-import styles from './app.module.css';
-import { useState, useEffect, ChangeEvent } from 'react';
-import { AstroSummary, fetchAstroSummary } from '../api/astro';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { GeocodeItem, searchCity } from '../api/geocode';
+import { useState } from 'react';
+import { AstroSummary, fetchAstroSummary } from './api/astro';
+import Background from './components/Background';
+import ModeToggle from './components/ModeToggle';
+import Modal from './components/Modal';
+import Result from './components/Result';
+import PlanningForm from './components/PlanningForm';
+import TelescopeGif from '../assets/telescope.webp';
 
 type LocationMode = 'coords' | 'city';
 
 export function App() {
   const [mode, setMode] = useState<LocationMode>('coords');
-  const [lat, setLat] = useState('');
-  const [lon, setLon] = useState('');
-  const [city, setCity] = useState('');
-  const [geoResults, setGeoResults] = useState<GeocodeItem[]>([]);
-  const [geoLoading, setGeoLoading] = useState(false);
-  const [geoError, setGeoError] = useState<string | null>(null);
-  const [date, setDate] = useState<Date | null>(new Date());
   const [result, setResult] = useState<AstroSummary | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const latNum = Number(lat);
-  const lonNum = Number(lon);
-
-  const cityTrimmed = city.trim();
-
-  useEffect(() => {
-    if (mode !== 'city') return;
-
-    if (cityTrimmed.length < 2) {
-      setGeoResults([]);
-      setGeoError(null);
-      return;
-    }
-
-    let alive = true;
-    const t = setTimeout(async () => {
-      try {
-        setGeoLoading(true);
-        setGeoError(null);
-        const results = await searchCity(cityTrimmed);
-        if (alive) {
-          setGeoResults(results);
-        }
-      } catch {
-        if (alive) {
-          setGeoError('Error searching for city');
-        }
-      } finally {
-        if (alive) {
-          setGeoLoading(false);
-        }
-      }
-    }, 400);
-
-    return () => {
-      alive = false;
-      clearTimeout(t);
-    };
-  }, [cityTrimmed, mode]);
-
-  const handleModeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newMode = e.target.checked ? 'city' : 'coords';
-    setMode(newMode);
-    setResult(undefined);
-  };
-
-  async function handlePlanNight() {
-    if (Number.isNaN(latNum) || Number.isNaN(lonNum) || !date) {
-      alert('Please fill in all fields');
-      return;
-    }
-
+  async function onPlanNightFormSubmitted(
+    lat: number,
+    lon: number,
+    date: Date
+  ) {
     try {
       setLoading(true);
-      console.log(
-        `Fetching astro summary for lat=${latNum}, lon=${lonNum}, date=${date.toISOString()}`
-      );
-      const summary = await fetchAstroSummary(latNum, lonNum, date);
-
+      const summary = await fetchAstroSummary(lat, lon, date);
       setResult(summary);
+      setIsModalOpen(true);
     } catch (error) {
       console.log(error);
       alert('Error fetching astro summary');
@@ -88,87 +34,36 @@ export function App() {
   }
 
   return (
-    <div>
-      <h1>Telescope Planning Assistant</h1>
-      <main>
-        {loading && <p>Loading...</p>}
+    <div className="text-white flex min-h-screen justify-center items-center">
+      <Background />
+      <main className="w-full max-w-xl flex flex-col gap-4 p-6">
+        <header>
+          <h1 className="text-4xl font-bold text-center">SkyLens</h1>
+          <h2 className="text-2xl font-semibold text-center">
+            Telescope Planning Assistant
+          </h2>
+          <img
+            src={TelescopeGif}
+            alt="Telescope"
+            className="w-full max-w-32 aspect-square object-cover mx-auto my-4"
+          />
+        </header>
 
-        <label className={styles.checkbox}>
-          <input
-            type="checkbox"
-            checked={mode === 'city'}
-            onChange={handleModeChange}
-          />
-          Search by city name
-        </label>
-        {mode === 'city' && (
-          <div>
-            <input
-              type="text"
-              placeholder="Enter city name"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-            {geoLoading && <p>Searching...</p>}
-            {geoError && <p className={styles.error}>{geoError}</p>}
-            <ul>
-              {geoResults.map((r) => (
-                <li key={`${r.name}-${r.lat}-${r.lon}`}>
-                  <button
-                    onClick={() => {
-                      setLat(r.lat.toString());
-                      setLon(r.lon.toString());
-                    }}
-                  >
-                    {r.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <div className={styles.location}>
-          <h3>Latitude</h3>
-          <input
-            type="number"
-            placeholder="Enter latitude"
-            value={lat}
-            onChange={(e) => setLat(e.target.value)}
-          />
-          <h3>Longitude</h3>
-          <input
-            type="number"
-            placeholder="Enter longitude"
-            value={lon}
-            onChange={(e) => setLon(e.target.value)}
-          />
-        </div>
-
-        <DatePicker
-          selected={date}
-          onChange={(newDate: Date | null) => {
-            setDate(newDate);
+        {loading && <p className="text-center">Loading...</p>}
+        <ModeToggle
+          value={mode}
+          onChange={(newMode) => {
+            setMode(newMode);
+            setResult(undefined);
           }}
-          className={styles.datepicker}
-          showIcon
-          toggleCalendarOnIconClick
         />
-        <button className={styles.button} onClick={handlePlanNight}>
-          Plan my night
-        </button>
 
-        {result && (
-          <article className={styles.result}>
-            <h2>Rating: {result.rating}</h2>
-            <p>
-              Moon Illumination: {(result.moonIllumination * 100).toFixed(0)}%
-            </p>
-            <ul className={styles.explanation}>
-              {result.explanation.map((e: string) => (
-                <li key={e}>{e}</li>
-              ))}
-            </ul>
-          </article>
+        <PlanningForm mode={mode} onSubmit={onPlanNightFormSubmitted} />
+
+        {isModalOpen && result && (
+          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Result result={result} />
+          </Modal>
         )}
       </main>
     </div>

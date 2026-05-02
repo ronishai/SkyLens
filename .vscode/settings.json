@@ -1,3 +1,7 @@
 {
-    "nxConsole.nxWorkspacePath": ""
+    "nxConsole.nxWorkspacePath": "web",
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "always"
+    }
 }

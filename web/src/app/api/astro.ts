@@ -12,7 +12,11 @@ export async function fetchAstroSummary(
   lon: number,
   dateTime: Date
 ): Promise<AstroSummary> {
-  const response = await fetch(`/api/astro/summary?lat=${lat}&lon=${lon}&dateTime=${encodeURIComponent(dateTime.toISOString())}`);
+  const response = await fetch(
+    `/api/astro/summary?lat=${lat}&lon=${lon}&dateTime=${encodeURIComponent(
+      dateTime.toISOString()
+    )}`
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch astro summary');

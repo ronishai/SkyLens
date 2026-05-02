@@ -50,7 +50,6 @@
       "plugin": "@nx/vite/plugin",
       "options": {
         "buildTargetName": "build",
-        "testTargetName": "test",
         "serveTargetName": "serve",
         "devTargetName": "dev",
         "previewTargetName": "preview",
@@ -72,11 +71,10 @@
       }
     },
     {
-      "plugin": "@nx/jest/plugin",
+      "plugin": "@nx/vitest",
       "options": {
-        "targetName": "test"
-      },
-      "exclude": ["api-e2e/**/*"]
+        "testTargetName": "test"
+      }
     }
   ],
   "targetDefaults": {
@@ -101,5 +99,8 @@
       }
     }
   },
-  "nxCloudId": "6981dececa0ede48e87b2927"
+  "cli": {
+    "packageManager": "pnpm"
+  },
+  "neverConnectToCloud": true
 }
