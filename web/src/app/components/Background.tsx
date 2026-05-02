@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import styles from './background.module.css';
+import styles from './Background.module.css';
 
 function generateStars(count: number, maxX: number, maxY: number): string {
   return Array.from(
