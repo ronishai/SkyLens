@@ -2,9 +2,11 @@
   "name": "telescope-planning-assistant",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
   "private": true,
   "type": "module",
+  "scripts": {
+    "dev": "nx run-many -t serve --all --parallel"
+  },
   "dependencies": {
     "@nestjs/common": "^11.1.19",
     "@nestjs/core": "^11.1.19",
