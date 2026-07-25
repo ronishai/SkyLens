@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   return {
     root: __dirname,
     cacheDir: '../node_modules/.vite/apps/web',
+    base: '/SkyLens',
     define: {
       'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
         isProduction ? 'https://skylens-proxy.ronishai416.workers.dev' : ''
