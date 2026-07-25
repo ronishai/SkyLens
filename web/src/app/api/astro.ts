@@ -13,7 +13,7 @@ export async function fetchAstroSummary(
   dateTime: Date
 ): Promise<AstroSummary> {
   const response = await fetch(
-    `/api/astro/summary?lat=${lat}&lon=${lon}&dateTime=${encodeURIComponent(
+    `${import.meta.env.VITE_API_BASE_URL}/api/astro/summary?lat=${lat}&lon=${lon}&dateTime=${encodeURIComponent(
       dateTime.toISOString()
     )}`
   );

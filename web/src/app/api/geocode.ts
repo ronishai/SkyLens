@@ -10,7 +10,7 @@ export async function searchCity(query: string): Promise<GeocodeItem[]> {
   if (!query || query.trim().length < 2) return [];
 
   const response = await fetch(
-    `/api/geocode/search?query=${encodeURIComponent(query.trim())}`
+    `${import.meta.env.VITE_API_BASE_URL}/api/geocode/search?query=${encodeURIComponent(query.trim())}`
   );
   if (!response.ok) {
     throw new Error(

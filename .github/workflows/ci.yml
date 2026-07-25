@@ -29,7 +29,7 @@ jobs:
       - name: Setup Node.js and cache pnpm dependencies
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -39,8 +39,12 @@ jobs:
         run: pnpm nx run-many -t lint
 
       - name: Build
-        run: pnpm nx run-many -t build
+        run: pnpm nx build web
 
-      - name: Fix CI with Nx
-        run: pnpm nx fix-ci
-        if: always()
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './web/build'
+
+      - name: Upload to github pages
+        uses: actions/deploy-pages@v4
