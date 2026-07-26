@@ -5,6 +5,11 @@
       "command": "eslint \"web/src/**/*.{ts,tsx,js,jsx}\" \"web/*.config.{js,ts,mjs}\""
     }
   },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "web/src",
   "projectType": "application",
